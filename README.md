@@ -82,3 +82,9 @@ A plataforma foi projetada com foco em segurança, usabilidade e escalabilidade.
 ## Considerações de Segurança
 
 A segurança é uma prioridade, com medidas como validação e sanitização de entradas, criptografia de dados, e políticas de senha forte implementadas para proteger os usuários e suas informações.
+
+## Plano de desenvolvimento
+
+O plano de desevolvimento foi montado antes do inicio do desenvolvimento do projeto e com o decorrer do desenvolvimento está sendo acrescentado novas demandas no board caso elas não constarem no escopo.
+
+[Board no Trello](https://trello.com/invite/b/667f31bf02e809ab0fd22d43/ATTIb5d58c6dfff3b17fb84707c2b3a3d37b6408DC9A/portifolio)
