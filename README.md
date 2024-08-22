@@ -1,70 +1,84 @@
-# Getting Started with Create React App
+# Descrição do Projeto
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Este projeto é uma aplicação web desenvolvida para oferecer aos usuários uma solução intuitiva e segura para o armazenamento e gerenciamento de credenciais. Através de uma interface amigável, os usuários podem salvar suas credencias de seus sites favoritos, assegurando um acesso rápido e seguro a esses sites quando necessário. A plataforma se destaca pela implementação de medidas robustas de segurança, como criptografia de dados e proporcionando uma experiência de uso eficiente e conveniente.
 
-## Available Scripts
+## Casos de Uso
 
-In the project directory, you can run:
+O diagrama de casos de uso apresenta as principais interações que um usuário pode realizar no sistema:
 
-### `npm start`
+- **Cadastrar**: Permite ao usuário criar uma nova conta na plataforma.
+- **Gerenciar Perfil**: O usuário pode editar seu perfil, recuperar sua senha e sair da aplicação.
+- **Gerenciar Credenciais**: Inclui funcionalidades para adicionar, editar, excluir e pesquisar sites favoritos.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Essas interações definem o escopo principal do sistema e representam os principais fluxos de trabalho.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+![Diagrama de Casos de Uso](assets/useCases.png)
 
-### `npm test`
+## História de Usuário
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Como um usuário que utiliza frequentemente diferentes navegadores e precisa acessar rapidamente os sites que mais frequentados:
 
-### `npm run build`
+- Eu quero poder armazenar e organizar meus sites favoritos em uma plataforma segura.
+- Eu quero que a plataforma armazene minhas credenciais de acesso de forma segura.
+- Eu preciso que a aplicação esteja disponível em múltiplos dispositivos e navegadores para que eu possa acessar meus daods de qualquer lugar.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Requisitos Funcionais
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+1. **RF01 - Cadastro de Usuário**: Permitir que os usuários se cadastrem na plataforma fornecendo informações básicas como nome, e-mail e senha.
+2. **RF02 - Adição de Sites Favoritos**: Possibilitar aos usuários adicionar novos sites favoritos à plataforma, informando o URL do site e suas credenciais de acesso.
+3. **RF03 - Edição de Sites Favoritos**: Permitir que os usuários editem as informações de sites favoritos já cadastrados, incluindo URL, credenciais de acesso e categorização.
+4. **RF04 - Exclusão de Sites Favoritos**: Possibilitar aos usuários excluir sites favoritos que não desejam mais armazenar na plataforma.
+5. **RF05 - Organização em Categorias**: Permitir que os usuários organizem seus sites favoritos em categorias personalizadas para facilitar o acesso e a navegação.
+6. **RF06 - Pesquisa de Sites Favoritos**: Oferecer aos usuários a capacidade de pesquisar sites favoritos por nome, URL ou categoria.
+7. **RF07 - Recuperação de Senha**: Permitir que os usuários redefinam suas senhas caso as esqueçam, utilizando um processo de recuperação seguro.
+8. **RF08 - Segurança**: Garantir que todas as informações dos usuários sejam armazenadas de forma segura e protegida por técnicas de criptografia.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Requisitos Não Funcionais
 
-### `npm run eject`
+1. **RNF01 - Usabilidade**: Desenvolver uma interface de usuário intuitiva e amigável para garantir uma experiência de uso agradável.
+2. **RNF02 - Desempenho**: Assegurar que a plataforma tenha um desempenho rápido e responsivo, minimizando o tempo de resposta para todas as operações.
+3. **RNF03 - Disponibilidade**: Garantir alta disponibilidade da plataforma, com tempo de inatividade mínimo e manutenções planejadas durante períodos de baixo tráfego.
+4. **RNF04 - Escalabilidade**: Projetar a plataforma para escalar facilmente, suportando um grande número de usuários e volumes de dados crescentes ao longo do tempo.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## Diagrama de Classes
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+O diagrama de classes ilustra a estrutura de dados e os relacionamentos entre as principais entidades no sistema. Isso inclui classes como `Usuario`, `SiteFavorito`, `Categoria`, e `Credenciais`, destacando os atributos e métodos principais de cada classe. Esse diagrama ajuda a visualizar como os dados são estruturados e como as entidades interagem dentro do sistema.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+![Diagrama de Classes](assets/diagramClasses.png)
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+## Modelo de Dados
 
-## Learn More
+O modelo de dados define a estrutura do banco de dados relacional utilizado pela aplicação. As principais tabelas incluem:
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+- **Usuario**: Armazena as informações dos usuários, como nome, e-mail, e senha (com hash).
+- **SiteFavorito**: Contém as URLs dos sites favoritos dos usuários, além de referências às credenciais associadas.
+- **Categoria**: Permite que os sites sejam organizados em categorias personalizadas.
+- **Credenciais**: Armazena de forma segura as credenciais de acesso (usuário e senha) associadas a cada site favorito.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Essas tabelas são interligadas por chaves estrangeiras para garantir a integridade dos dados e facilitar consultas complexas.
 
-### Code Splitting
+## Considerações de Design
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+A plataforma foi projetada com foco em segurança, usabilidade e escalabilidade. Seguindo padrões de design como MVC (Model-View-Controller) e arquitetura baseada em microserviços, a aplicação é modular e fácil de manter. Os modelos C4 foram aplicados para detalhar a arquitetura do sistema em diferentes níveis, desde o contexto até o nível de código, garantindo uma visão coesa e compreensiva de toda a estrutura.
 
-### Analyzing the Bundle Size
+## Tecnologias Utilizadas
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+- **Frontend**: React.js, HTML5, CSS3
+- **Backend**: Node.js, Express.js
+- **Banco de Dados**: MySQL
+- **ORM**: Sequelize
+- **Controle de Versão**: Git/GitHub
+- **Ferramentas de Desenvolvimento**: Visual Studio Code, Postman
+- **Gestão de Projeto**: Trello (metodologia ágil Kanban)
 
-### Making a Progressive Web App
+## Próximos Passos
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+1. **Implementação do Projeto**: Iniciar o desenvolvimento da aplicação, incluindo frontend e backend, integração de funcionalidades e medidas de segurança.
+2. **Testes e Depuração**: Realizar testes para garantir o funcionamento esperado da aplicação e corrigir bugs.
+3. **Revisão e Aprovação**: Submeter o projeto para revisão e fazer ajustes com base no feedback.
+4. **Entrega Final**: Preparar o projeto para entrega final após a aprovação.
+5. **Lançamento e Publicação**: Realizar o lançamento oficial da plataforma.
 
-### Advanced Configuration
+## Considerações de Segurança
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+A segurança é uma prioridade, com medidas como validação e sanitização de entradas, criptografia de dados, e políticas de senha forte implementadas para proteger os usuários e suas informações.
