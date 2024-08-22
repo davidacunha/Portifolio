@@ -18,9 +18,9 @@ Essas interações definem o escopo principal do sistema e representam os princi
 
 Como um usuário que utiliza frequentemente diferentes navegadores e precisa acessar rapidamente os sites que mais frequentados:
 
-- Eu quero poder armazenar e organizar meus sites favoritos em uma plataforma segura.
+- Eu quero poder armazenar e organizar meus sites favoritos em uma plataforma confiável.
 - Eu quero que a plataforma armazene minhas credenciais de acesso de forma segura.
-- Eu preciso que a aplicação esteja disponível em múltiplos dispositivos e navegadores para que eu possa acessar meus daods de qualquer lugar.
+- Eu preciso que a aplicação esteja disponível em múltiplos dispositivos e navegadores para que eu possa acessar meus dados de qualquer lugar.
 
 ## Requisitos Funcionais
 

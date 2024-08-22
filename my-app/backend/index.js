@@ -1,75 +1,71 @@
 require('dotenv').config();
 const express = require('express');
 const db = require('./config/db'); 
+const bcrypt = require('bcrypt');
 const app = express();
 const PORT = process.env.PORT || 5000;
 
 const cors = require('cors');
 app.use(cors());
 
-// Middleware para parsing JSON
 app.use(express.json());
 
-// Rota de autenticação existente
-app.post('/auth', (req, res) => {
-  const { email, password } = req.body;
+app.post('/register', async (req, res) => {
+  const { username, email, password } = req.body;
 
-  if (!email || !password) {
+  if (!username || !email || !password) {
     return res.status(400).json({ success: false, message: 'Por favor, preencha todos os campos.' });
   }
 
-  // Consulta ao banco de dados para verificar o usuário
-  const query = 'SELECT * FROM users WHERE email = ? AND password = ?';
-  db.query(query, [email, password], (err, results) => {
-    if (err) {
-      console.error('Erro na consulta ao banco de dados:', err);
-      return res.status(500).json({ success: false, message: 'Erro no servidor' });
+  try {
+    const [existingUser] = await db.promise().query('SELECT * FROM Users WHERE username = ? OR email = ?', [username, email]);
+
+    if (existingUser.length > 0) {
+      return res.status(400).json({ success: false, message: 'Usuário ou e-mail já registrado.' });
     }
 
-    if (results.length > 0) {
-      // Usuário encontrado
-      res.status(200).json({ success: true, message: 'Login bem-sucedido!' });
-    } else {
-      // Usuário não encontrado ou senha incorreta
-      res.status(401).json({ success: false, message: 'E-mail ou senha incorretos.' });
-    }
-  });
-});
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const [result] = await db.promise().query('INSERT INTO Users (username, email, password) VALUES (?, ?, ?)', [username, email, hashedPassword]);
 
-// Nova rota para registro de usuários
-app.post('/register', (req, res) => {
-  const { name, email, password } = req.body;
-
-  if (!name || !email || !password) {
-    return res.status(400).json({ success: false, message: 'Por favor, preencha todos os campos.' });
+    res.status(200).json({ success: true, message: 'Usuário criado com sucesso!' });
+  } catch (err) {
+    console.error('Erro ao registrar usuário no banco de dados:', err);
+    res.status(500).json({ success: false, message: 'Erro no servidor' });
   }
-
-  // Verifica se o usuário já existe
-  const checkUserQuery = 'SELECT * FROM users WHERE email = ?';
-  db.query(checkUserQuery, [email], (err, results) => {
-    if (err) {
-      console.error('Erro ao verificar usuário no banco de dados:', err);
-      return res.status(500).json({ success: false, message: 'Erro no servidor' });
-    }
-
-    if (results.length > 0) {
-      return res.status(400).json({ success: false, message: 'Usuário já registrado com este e-mail.' });
-    }
-
-    // Insere o novo usuário no banco de dados
-    const insertUserQuery = 'INSERT INTO users (name, email, password) VALUES (?, ?, ?)';
-    db.query(insertUserQuery, [name, email, password], (err, results) => {
-      if (err) {
-        console.error('Erro ao registrar usuário no banco de dados:', err);
-        return res.status(500).json({ success: false, message: 'Erro no servidor' });
-      }
-
-      res.status(200).json({ success: true, message: 'Usuário criado com sucesso!' });
-    });
-  });
 });
 
 app.listen(PORT, () => {
   console.log(`Servidor rodando na porta ${PORT}`);
 });
 
+// Rota de autenticação existente
+app.post('/auth', async (req, res) => {
+  const { email, password } = req.body;
+
+  if (!email || !password) {
+    return res.status(400).json({ success: false, message: 'Por favor, preencha todos os campos.' });
+  }
+
+  try {
+    // Consulta ao banco de dados para verificar o usuário
+    const [users] = await db.promise().query('SELECT * FROM Users WHERE email = ?', [email]);
+
+    if (users.length === 0) {
+      return res.status(401).json({ success: false, message: 'E-mail ou senha incorretos.' });
+    }
+
+    const user = users[0];
+
+    // Compara a senha fornecida com a senha encriptada no banco
+    const isMatch = await bcrypt.compare(password, user.password);
+
+    if (isMatch) {
+      res.status(200).json({ success: true, message: 'Login bem-sucedido!' });
+    } else {
+      res.status(401).json({ success: false, message: 'E-mail ou senha incorretos.' });
+    }
+  } catch (err) {
+    console.error('Erro na consulta ao banco de dados:', err);
+    res.status(500).json({ success: false, message: 'Erro no servidor' });
+  }
+});

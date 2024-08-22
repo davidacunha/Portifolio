@@ -2,29 +2,29 @@ import React, { useState } from 'react';
 import '../style/register.css';
 
 const Register = ({ onLoginClick }) => {
-  const [name, setName] = useState('');
+  const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const [setMessage] = useState('');
+  const [message, setMessage] = useState('');
 
   const handleRegister = async (e) => {
     e.preventDefault();
 
     // Validações simples
-    if (!name || !email || !password) {
+    if (!username || !email || !password) {
       setError('Por favor, preencha todos os campos.');
       return;
     }
 
     try {
       // Envia os dados para o backend
-      const response = await fetch('/https://localhost:5000/register', {
+      const response = await fetch('http://localhost:5000/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ name, email, password }),
+        body: JSON.stringify({ username, email, password }),
       });
 
       const data = await response.json();
@@ -32,8 +32,8 @@ const Register = ({ onLoginClick }) => {
       if (data.success) {
         setMessage('Usuário registrado com sucesso!');
         setError('');
-        // Você pode limpar os campos do formulário aqui, se quiser
-        setName('');
+        // Limpa os campos do formulário
+        setUsername('');
         setEmail('');
         setPassword('');
       } else {
@@ -51,10 +51,10 @@ const Register = ({ onLoginClick }) => {
         <form onSubmit={handleRegister}>
           <input
             type="text"
-            placeholder="Name"
+            placeholder="Username"
             className="register-input"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
           />
           <input
             type="email"
@@ -73,8 +73,8 @@ const Register = ({ onLoginClick }) => {
           <button type="submit" className="register-button">Register</button>
         </form>
         {error && <p className="register-error">{error}</p>}
-        <button onClick={onLoginClick} className="back-to-login-button">Return to login page
-        </button>
+        {message && <p className="register-success">{message}</p>}
+        <button onClick={onLoginClick} className="back-to-login-button">Return to login page</button>
       </div>
     </div>
   );
