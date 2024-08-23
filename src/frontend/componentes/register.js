@@ -11,14 +11,12 @@ const Register = ({ onLoginClick }) => {
   const handleRegister = async (e) => {
     e.preventDefault();
 
-    // Validações simples
     if (!username || !email || !password) {
       setError('Por favor, preencha todos os campos.');
       return;
     }
 
     try {
-      // Envia os dados para o backend
       const response = await fetch('http://localhost:5000/register', {
         method: 'POST',
         headers: {
@@ -32,7 +30,6 @@ const Register = ({ onLoginClick }) => {
       if (data.success) {
         setMessage('Usuário registrado com sucesso!');
         setError('');
-        // Limpa os campos do formulário
         setUsername('');
         setEmail('');
         setPassword('');
@@ -74,7 +71,9 @@ const Register = ({ onLoginClick }) => {
         </form>
         {error && <p className="register-error">{error}</p>}
         {message && <p className="register-success">{message}</p>}
-        <button onClick={onLoginClick} className="back-to-login-button">Return to login page</button>
+        <p className="back-login"> 
+          Return to <button onClick={onLoginClick} className="back-to-login-button">login page</button>
+      </p>
       </div>
     </div>
   );

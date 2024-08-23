@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import '../style/Login.css';
 import loginIcon from '../images/Logo.png';
 
-const Login = ({ onRegisterClick }) => {
+const Login = ({ onLoginSuccess, onRegisterClick }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const navigate = useNavigate();
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
 
     if (!email || !password) {
@@ -15,25 +17,27 @@ const Login = ({ onRegisterClick }) => {
       return;
     }
 
-    fetch('http://localhost:5000/auth', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ email, password }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.success) {
-          alert('Login bem-sucedido!');
-        } else {
-          setError('E-mail ou senha incorretos.');
-        }
-      })
-      .catch((error) => {
-        console.error('Erro:', error);
-        setError('Ocorreu um erro. Tente novamente.');
+    try {
+      const response = await fetch('http://localhost:5000/auth', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password }),
       });
+
+      const data = await response.json();
+
+      if (data.success) {
+        onLoginSuccess();
+        navigate('/Dashboard');
+      } else {
+        setError('E-mail ou senha incorretos.');
+      }
+    } catch (error) {
+      console.error('Erro:', error);
+      setError('Ocorreu um erro ao tentar fazer login. Tente novamente mais tarde.');
+    }
   };
 
   return (
@@ -50,16 +54,16 @@ const Login = ({ onRegisterClick }) => {
           />
           <input
             type="password"
-            placeholder="Senha"
+            placeholder="Password"
             className="login-input"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
-          <button type="submit" className="login-button">Acessar</button>
+          <button type="submit" className="login-button">Login</button>
         </form>
         {error && <p className="login-error">{error}</p>}
         <p className="register-link">
-          Não tem uma conta? <button onClick={onRegisterClick}>Registre-se</button>
+        Don't have an account? <button onClick={onRegisterClick} className="link-button">Register</button>
         </p>
       </div>
     </div>

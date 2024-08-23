@@ -25,6 +25,7 @@ app.post('/register', async (req, res) => {
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
+
     await db.promise().query('INSERT INTO Users (username, email, password) VALUES (?, ?, ?)', [username, email, hashedPassword]);
 
     res.status(200).json({ success: true, message: 'Usuário criado com sucesso!' });

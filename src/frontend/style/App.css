@@ -36,3 +36,24 @@
     transform: rotate(360deg);
   }
 }
+
+.toggle-button {
+  display: block;
+  margin: 10px auto;
+  padding: 10px 20px;
+  background-color: #007bff; /* Azul */
+  border: none;
+  color: white;
+  cursor: pointer;
+  border-radius: 5px;
+  font-size: 16px;
+  text-align: center;
+}
+
+.toggle-button:hover {
+  background-color: #0056b3; /* Azul mais escuro */
+}
+
+.toggle-button:focus {
+  outline: none;
+}

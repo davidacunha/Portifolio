@@ -3,13 +3,13 @@
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background-color: #dec4c4; /* Fundo rosado */
+    background-color: #3c609b; 
   }
   
   .login-card {
-    background-color: #d9bdbd; /* Cartão com tom mais escuro de rosa */
+    background-color: #6f8dcc; 
     padding: 20px;
-    border-radius: 15px;
+    border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     text-align: center;
     width: 300px;
@@ -23,12 +23,12 @@
   
   .login-input {
     display: block;
-    width: 100%;
+    width: calc(100% - 20px);
     padding: 10px;
     margin: 10px 0;
     border-radius: 5px;
     border: none;
-    background-color: #000000;
+    background-color: #88a4e4a4;
     color: #ffffff;
     font-size: 16px;
   }
@@ -39,26 +39,26 @@
     margin: 20px 0;
     border-radius: 5px;
     border: none;
-    background-color: #000000;
+    background-color: #88a4e49d;
     color: #ffffff;
     font-size: 16px;
     cursor: pointer;
   }
 
   .login-error {
-    color: red;
+    color: rgba(255, 0, 0, 0.774);
     margin-top: 10px;
     font-size: 14px;
   }
   .register-link {
     margin-top: 10px;
     font-size: 14px;
-    color: #007bff;
+    color: #000000;
     text-align: center;
   }
   
   .register-link button {
-    color: #007bff;
+    color: #385baa;
     text-decoration: underline;
     cursor: pointer;
     background: none;
@@ -66,11 +66,4 @@
     padding: 0;
     font-size: 14px;
   }
-  .back-to-login-button {
-    margin-top: 15px;
-    color: #007bff;
-    background: none;
-    border: none;
-    cursor: pointer;
-    text-decoration: underline;
-  }  
+
