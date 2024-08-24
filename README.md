@@ -69,7 +69,7 @@ Aqui, detalhamos os principais contêineres que compõem o sistema, como aplica�
 
 Este diagrama foca nos componentes internos de cada contêiner, detalhando como eles são organizados e como colaboram para fornecer as funcionalidades do sistema. Componentes podem ser classes, bibliotecas ou módulos.
 
-![Diagrama de Componente](assets/diagramofComponent.png)
+![Diagrama de Componente](assets/diagramofComponent.png.png)
 
 ## Considerações de Design
 
