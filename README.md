@@ -57,6 +57,20 @@ O modelo de dados define a estrutura do banco de dados relacional utilizado pela
 
 Essas tabelas são interligadas por chaves estrangeiras para garantir a integridade dos dados e facilitar consultas complexas.
 
+## Modelo C4
+
+### Diagrama de Contêineres
+
+Aqui, detalhamos os principais contêineres que compõem o sistema, como aplicações web, serviços de backend, bases de dados, etc. Este nível de detalhe ajuda a entender como os diferentes componentes do sistema estão distribuídos e interagem entre si.
+
+![Diagrama de Contêineres](assets/diagramofContainers.png)
+
+### Diagrama de Componente
+
+Este diagrama foca nos componentes internos de cada contêiner, detalhando como eles são organizados e como colaboram para fornecer as funcionalidades do sistema. Componentes podem ser classes, bibliotecas ou módulos.
+
+![Diagrama de Componente](assets/diagramofComponent.png)
+
 ## Considerações de Design
 
 A plataforma foi projetada com foco em segurança, usabilidade e escalabilidade. Seguindo padrões de design como MVC (Model-View-Controller) e arquitetura baseada em microserviços, a aplicação é modular e fácil de manter. Os modelos C4 foram aplicados para detalhar a arquitetura do sistema em diferentes níveis, desde o contexto até o nível de código, garantindo uma visão coesa e compreensiva de toda a estrutura.
@@ -70,14 +84,6 @@ A plataforma foi projetada com foco em segurança, usabilidade e escalabilidade.
 - **Controle de Versão**: Git/GitHub
 - **Ferramentas de Desenvolvimento**: Visual Studio Code, Postman
 - **Gestão de Projeto**: Trello (metodologia ágil Kanban)
-
-## Próximos Passos
-
-1. **Implementação do Projeto**: Iniciar o desenvolvimento da aplicação, incluindo frontend e backend, integração de funcionalidades e medidas de segurança.
-2. **Testes e Depuração**: Realizar testes para garantir o funcionamento esperado da aplicação e corrigir bugs.
-3. **Revisão e Aprovação**: Submeter o projeto para revisão e fazer ajustes com base no feedback.
-4. **Entrega Final**: Preparar o projeto para entrega final após a aprovação.
-5. **Lançamento e Publicação**: Realizar o lançamento oficial da plataforma.
 
 ## Considerações de Segurança
 
