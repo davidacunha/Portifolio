@@ -29,8 +29,7 @@ const Login = ({ onLoginSuccess, onRegisterClick }) => {
       const data = await response.json();
 
       if (data.success) {
-        onLoginSuccess();
-        navigate('/Dashboard');
+        onLoginSuccess(data.user);
       } else {
         setError('E-mail ou senha incorretos.');
       }

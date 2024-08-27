@@ -45,6 +45,10 @@
     cursor: pointer;
   }
 
+  .login-button:hover {
+    background-color: #0056b3;
+  }
+
   .login-error {
     color: rgba(255, 0, 0, 0.774);
     margin-top: 10px;

@@ -1,5 +1,6 @@
 .App {
   text-align: center;
+  margin-top: 70px;
 }
 
 .App-logo {
@@ -41,7 +42,7 @@
   display: block;
   margin: 10px auto;
   padding: 10px 20px;
-  background-color: #007bff; /* Azul */
+  background-color: #007bff;
   border: none;
   color: white;
   cursor: pointer;
@@ -51,9 +52,13 @@
 }
 
 .toggle-button:hover {
-  background-color: #0056b3; /* Azul mais escuro */
+  background-color: #0056b3;
 }
 
 .toggle-button:focus {
   outline: none;
+}
+
+.dashboard-container {
+  margin-top: 70px;
 }
