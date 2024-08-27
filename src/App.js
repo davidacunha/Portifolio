@@ -4,7 +4,7 @@ import Login from './frontend/componentes/Login';
 import Register from './frontend/componentes/register';
 import Dashboard from './frontend/componentes/Dashboard';
 import Settings from './frontend/componentes/Settings';
-import Header from './frontend/componentes/Header';  // Importar o Header
+import Header from './frontend/componentes/Header';
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -12,9 +12,9 @@ function App() {
   const [isRegistering, setIsRegistering] = useState(false);
   const navigate = useNavigate();
 
-  const handleLoginSuccess = (user) => {
+  const handleLoginSuccess = (userData) => {
     setIsAuthenticated(true);
-    setUser(user);
+    setUser(userData);
     navigate('/Dashboard');
   };
 
@@ -30,12 +30,12 @@ function App() {
 
   return (
     <div className="App">
-      {isAuthenticated && <Header onLogout={hadleLogout} />}  {/* Adiciona o Header */}
+      {isAuthenticated && <Header onLogout={hadleLogout} />}
       <Routes>
         {isAuthenticated ? (
           <>
             <Route path="/Dashboard" element={<Dashboard />} />
-            <Route path="/Settings" element={<Settings user={user} />} />
+            <Route path="/Settings" element={<Settings userEmail={user?.email} username={user?.name} />} />
           </>
         ) : (
           <>

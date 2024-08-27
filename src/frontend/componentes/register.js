@@ -10,12 +10,12 @@ const Register = ({ onLoginClick }) => {
 
   const handleRegister = async (e) => {
     e.preventDefault();
-
+  
     if (!username || !email || !password) {
       setError('Por favor, preencha todos os campos.');
       return;
     }
-
+  
     try {
       const response = await fetch('http://localhost:5000/register', {
         method: 'POST',
@@ -24,9 +24,9 @@ const Register = ({ onLoginClick }) => {
         },
         body: JSON.stringify({ username, email, password }),
       });
-
+  
       const data = await response.json();
-
+  
       if (data.success) {
         setMessage('Usuário registrado com sucesso!');
         setError('');
@@ -73,7 +73,7 @@ const Register = ({ onLoginClick }) => {
         {message && <p className="register-success">{message}</p>}
         <p className="back-login"> 
           Return to <button onClick={onLoginClick} className="back-to-login-button">login page</button>
-      </p>
+        </p>
       </div>
     </div>
   );
