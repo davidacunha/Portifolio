@@ -6,7 +6,8 @@ const Header = ({ onLogout }) => {
   return (
     <div className="dashboard-header">
       <div className="header-buttons">
-        <Link to="/Dashboard" className="dashboard-button">Dashboard</Link>
+        <Link to="/Dashboard" className="dashboard-button">Home Page</Link>
+        <Link to="/Crendetials" className="dashboard-button">My Crendetials</Link>
         <Link to="/Settings" className="dashboard-button">Settings</Link>
         <button className="logout-button" onClick={onLogout}>Logout</button>
       </div>

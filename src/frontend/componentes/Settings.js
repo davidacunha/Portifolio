@@ -1,63 +1,152 @@
 import React, { useState, useEffect } from 'react';
 import '../style/Settings.css';
 
-const Settings = ({ userEmail, userName }) => {
+const Settings = ({ userEmail, username }) => {
   const [isEditing, setIsEditing] = useState(false);
-  const [editName, setEditName] = useState(userName);
+  const [editName, setEditName] = useState(username);
   const [editEmail, setEditEmail] = useState(userEmail);
+  const [currentPassword, setCurrentPassword] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [message, setMessage] = useState('');
+  const [passwordValidations, setPasswordValidations] = useState({
+    hasMinLength: false,
+    hasUpperCase: false,
+    hasLowerCase: false,
+    hasNumber: false,
+    hasSpecialChar: false,
+  });
 
   useEffect(() => {
-    setEditName(userName);
+    setEditName(username);
     setEditEmail(userEmail);
-  }, [userName, userEmail]);
+  }, [username, userEmail]);
+
+  const validatePassword = (password) => {
+    const hasMinLength = password.length >= 8;
+    const hasUpperCase = /[A-Z]/.test(password);
+    const hasLowerCase = /[a-z]/.test(password);
+    const hasNumber = /\d/.test(password);
+    const hasSpecialChar = /[!@#$%^&*()_+[\]{};':"\\|,.<>/?]/.test(password);
+    setPasswordValidations({ hasMinLength, hasUpperCase, hasLowerCase, hasNumber, hasSpecialChar });
+  };
 
   const handleEditClick = () => {
     setIsEditing(true);
+    setMessage('');
   };
 
   const handleSaveClick = async () => {
-    const response = await fetch('http://localhost:5000/routers/updateUser', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ name: editName, email: editEmail }),
-    });
-
-    const data = await response.json();
-
-    if (data.success) {
-      setIsEditing(false);
-    } else {
-      alert('Erro ao atualizar os dados do usuário');
+    if (newPassword && newPassword !== confirmPassword) {
+      setMessage('As senhas não coincidem.');
+      return;
     }
+
+    try {
+      const response = await fetch('http://localhost:5000/updateUser', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ 
+          name: editName, 
+          email: editEmail, 
+          currentPassword, 
+          newPassword,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        setIsEditing(false);
+        setMessage('Usuário atualizado com sucesso!');
+      } else {
+        setMessage(data.message || 'Erro ao atualizar os dados do usuário');
+      }
+    } catch (error) {
+      console.error('Erro ao atualizar os dados do usuário:', error);
+      setMessage('Erro ao atualizar os dados do usuário');
+    }
+  };
+
+  const handleCancelClick = () => {
+    setIsEditing(false);
+    setMessage('');
+    setCurrentPassword('');
+    setNewPassword('');
+    setConfirmPassword('');
   };
 
   return (
     <div className="settings-container">
-      <h2>Configurações do Usuário</h2>
-      <div>
-        <label>
-          Nome:<input
-            type="text"
-            value={editName}
-            onChange={(e) => setEditName(e.target.value)}
-            disabled={!isEditing}
-          />
-        </label>
-        <label>
-          Email:<input
-            type="email"
-            value={editEmail}
-            onChange={(e) => setEditEmail(e.target.value)}
-            disabled={!isEditing}
-          />
-        </label>
-        {isEditing ? (
-          <button onClick={handleSaveClick} className="save-button">Salvar</button>
-        ) : (
-          <button onClick={handleEditClick} className="edit-button">Editar</button>
-        )}
+      <div className="settings-content">
+        <h2>User Settings</h2>
+        {message && <p className="message">{message}</p>}
+        <div>
+          <label>
+            Name:<input
+              type="text"
+              value={editName}
+              onChange={(e) => setEditName(e.target.value)}
+              disabled={!isEditing}
+            />
+          </label>
+          <label>
+            Email:<input
+              type="email"
+              value={editEmail}
+              onChange={(e) => setEditEmail(e.target.value)}
+              disabled={!isEditing}
+            />
+          </label>
+          {isEditing && (
+            <>
+              <label>
+                Current Password:<input
+                  type="password"
+                  value={currentPassword}
+                  onChange={(e) => setCurrentPassword(e.target.value)}
+                  placeholder="Digite sua senha atual"
+                />
+              </label>
+              <label>
+                New Password:<input
+                  type="password"
+                  value={newPassword}
+                  onChange={(e) => {
+                    setNewPassword(e.target.value);
+                    validatePassword(e.target.value);
+                  }}
+                  placeholder="Digite a nova senha"
+                />
+              </label>
+              <ul className="change-password">
+                <li className={passwordValidations.hasMinLength ? 'valid' : 'invalid'}>Pelo menos 8 caracteres</li>
+                <li className={passwordValidations.hasUpperCase ? 'valid' : 'invalid'}>Um caractere maiúsculo</li>
+                <li className={passwordValidations.hasLowerCase ? 'valid' : 'invalid'}>Um caractere minúsculo</li>
+                <li className={passwordValidations.hasNumber ? 'valid' : 'invalid'}>Um número</li>
+                <li className={passwordValidations.hasSpecialChar ? 'valid' : 'invalid'}>Um caractere especial (!@#$%^&*)</li>
+              </ul>
+              <label>
+                Confirm your new password:<input
+                  type="password"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  placeholder="Confirme a nova senha"
+                />
+              </label>
+            </>
+          )}
+          {isEditing ? (
+            <div className="button-group">
+              <button onClick={handleSaveClick} className="save-button">Save</button>
+              <button onClick={handleCancelClick} className="cancel-button">Cancel</button>
+            </div>
+          ) : (
+            <button onClick={handleEditClick} className="edit-button">Edit</button>
+          )}
+        </div>
       </div>
     </div>
   );

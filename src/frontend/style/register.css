@@ -17,7 +17,7 @@
 
 .register-input {
   display: block;
-  width: calc(100% - 20px);
+  width: 96%;
   padding: 10px;
   margin: 10px 0;
   border-radius: 5px;
@@ -33,7 +33,7 @@
   margin: 20px 0;
   border-radius: 5px;
   border: none;
-  background-color: #2770bdbd;
+  background-color: #0067d4;
   color: #ffffff;
   font-size: 16px;
   cursor: pointer;
@@ -62,7 +62,49 @@
 
 .back-login {
   margin-top: 10px;
-    font-size: 14px;
-    color: #000000;
-    text-align: center;
+  font-size: 14px;
+  color: #000000;
+  text-align: center;
+}
+
+.password-requirements {
+  font-size: 14px;
+  color: #333;
+  margin-bottom: 10px;
+  padding-left: 20px;
+  text-align: left;
+}
+
+.password-requirements li {
+  margin-bottom: 5px;
+  list-style-position: inside;
+}
+
+.password-requirements li.valid {
+  color: green;
+}
+
+.password-requirements li.invalid {
+  color: red;
+}
+
+.password-input-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.register-input[type="password"] {
+  width: calc(100% - 40px);
+  padding-right: 40px;
+}
+
+.toggle-password-button {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
 }
