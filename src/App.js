@@ -18,7 +18,7 @@ function App() {
     navigate('/Dashboard');
   };
 
-  const hadleLogout = () => {
+  const handleLogout = () => {
     setIsAuthenticated(false);
     setUser(null);
     navigate('/');
@@ -30,7 +30,7 @@ function App() {
 
   return (
     <div className="App">
-      {isAuthenticated && <Header onLogout={hadleLogout} />}
+      {isAuthenticated && <Header onLogout={handleLogout} />}
       <Routes>
         {isAuthenticated ? (
           <>
@@ -47,11 +47,6 @@ function App() {
           </>
         )}
       </Routes>
-      {!isAuthenticated && (
-        <button className="toggle-button" onClick={toggleForm}>
-          {isRegistering ? 'Já tem uma conta? Faça login' : 'Não tem uma conta? Registre-se'}
-        </button>
-      )}
     </div>
   );
 }

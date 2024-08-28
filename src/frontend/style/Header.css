@@ -5,52 +5,46 @@
     z-index: 1000;
     background-color: #282c34;
   }
-  
-.dashboard-header {
-    background-color: #8b8b8b93;
-    padding: 10px;
-    border-radius: 10px;
-    color: #fff;
-    margin: 20px auto;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 30%;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 1000;
-  }
-  
+
   .header-buttons {
     display: flex;
     gap: 10px;
     justify-content: center;
+    flex-wrap: wrap;
   }
   
-  .dashboard-button,
-  .logout-button {
-    background-color: #007bff;
-    border: none;
-    padding: 8px 16px;
-    border-radius: 5px;
+  .dashboard-button {
+    background-color: #366de4;
     color: white;
-    cursor: pointer;
-    font-size: 16px;
-    text-decoration: none;
-  }
-  
-  .logout-button {
-    background-color: #ff4c4c;
   }
   
   .dashboard-button:hover {
     background-color: #0056b3;
-   }
+  }
+  
+  .logout-button {
+    background-color: #ff4c4c;
+    color: white;
+  }
 
   .logout-button:hover {
     background-color: #b60101;
   }
   
+
+  @media (max-width: 768px) {
+    .dashboard-header {
+      width: 80%;
+    }
+  
+    .header-buttons {
+      justify-content: center; 
+      gap: 5px; 
+    }
+  
+    .dashboard-button,
+    .logout-button {
+      width: 80px;
+      font-size: 14px;
+    }
+  }
