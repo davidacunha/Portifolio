@@ -131,7 +131,7 @@
 }
 
 .change-password .invalid {
-  color: rgb(190, 0, 0);
+  color: rgb(22, 14, 14);
 }
 
 .change-password li::before {
