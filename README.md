@@ -82,6 +82,7 @@ A plataforma foi projetada com foco em segurança, usabilidade e escalabilidade.
 - **Banco de Dados**: MySQL
 - **ORM**: Sequelize
 - **Controle de Versão**: Git/GitHub
+- **CI/CD**: Github Actions
 - **Ferramentas de Desenvolvimento**: Visual Studio Code, Postman
 - **Gestão de Projeto**: Trello (metodologia ágil Kanban)
 
