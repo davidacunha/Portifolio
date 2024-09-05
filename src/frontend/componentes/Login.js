@@ -29,6 +29,8 @@ const Login = ({ onLoginSuccess, onRegisterClick }) => {
       const data = await response.json();
 
       if (data.success) {
+        sessionStorage.setItem('userId', data.user.id);
+        sessionStorage.setItem('token', data.token);
         onLoginSuccess(data.user);
       } else {
         setError('E-mail ou senha incorretos.');
