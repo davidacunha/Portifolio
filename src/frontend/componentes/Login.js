@@ -31,13 +31,14 @@ const Login = ({ onLoginSuccess, onRegisterClick }) => {
       if (data.success) {
         sessionStorage.setItem('userId', data.user.id);
         sessionStorage.setItem('token', data.token);
+        sessionStorage.setItem('userKey', data.userKey);
         onLoginSuccess(data.user);
       } else {
         setError('E-mail ou senha incorretos.');
       }
     } catch (error) {
       console.error('Erro:', error);
-      setError('Ocorreu um erro ao tentar fazer login. Tente novamente mais tarde.');
+      setError('Ocorreu um erro ao tentar fazer login.');
     }
   };
 
