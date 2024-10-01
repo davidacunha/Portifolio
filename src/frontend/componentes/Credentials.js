@@ -6,36 +6,46 @@ const Credentials = ({ user }) => {
   const [newCredential, setNewCredential] = useState({ url: '', username: '', password: '' });
   const [isAdding, setIsAdding] = useState(false);
   const [message, setMessage] = useState('');
+  const [isEditing, setIsEditing] = useState(false);
+  const [currentCredentialId, setCurrentCredentialId] = useState(null);
+  const [userId, setUserId] = useState(null);
+  const [token, setToken] = useState(null);
+  const [showPasswords, setShowPasswords] = useState({});
+
+  const loadCredentialsData = () => {
+    const storedUserId = sessionStorage.getItem('userId');
+    const storedToken = sessionStorage.getItem('token');
+
+    if (storedUserId && storedToken) {
+      setUserId(storedUserId);
+      setToken(storedToken);
+    } else {
+      setMessage('Usuário ou token não encontrado.');
+    }
+  };
 
   useEffect(() => {
-    const userId = sessionStorage.getItem('userId');
-    if (userId) {
-      fetchCredentials(userId);
-    } else {
-      setMessage('Usuário não encontrado.');
-      console.log('Usuário não encontrado: ', user);
-    }
+    loadCredentialsData();
   }, []);
-  
-  const fetchCredentials = async (userId) => {
-    if (!userId) { 
-      setMessage('Usuário não encontrado.');
-      console.log('Erro: usuário sem ID');
-      return;
+
+  useEffect(() => {
+    if (userId && token) {
+      fetchCredentials(userId, token);
     }
-  
+  }, [userId, token]);
+
+  const fetchCredentials = async (userId, token) => {
     try {
-      const token = sessionStorage.getItem('token');
-      const response = await fetch(`http://localhost:5000/getCredential?user_id=${userId}`, {
+      const response = await fetch('http://localhost:5000/getCredential', {
         method: 'GET',
         headers: {
           'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
         },
       });
-  
+
       const data = await response.json();
-  
+
       if (data.success) {
         setCredentials(data.credentials);
         setMessage('');
@@ -47,15 +57,14 @@ const Credentials = ({ user }) => {
       setMessage('Erro ao conectar ao servidor.');
     }
   };
-  
+
   const handleAddCredential = async () => {
     const userId = sessionStorage.getItem('userId');
     if (!userId) {
       setMessage('Usuário não encontrado.');
-      console.log('Erro: usuário sem ID');
       return;
     }
-  
+
     try {
       const token = sessionStorage.getItem('token');
       const response = await fetch('http://localhost:5000/addCredential', {
@@ -66,13 +75,9 @@ const Credentials = ({ user }) => {
         },
         body: JSON.stringify({ ...newCredential, user_id: userId }),
       });
-  
-      if (!response.ok) {
-        throw new Error('Erro na resposta do servidor');
-      }
-  
+
       const data = await response.json();
-  
+
       if (data.success) {
         fetchCredentials(userId);
         setNewCredential({ url: '', username: '', password: '' });
@@ -85,17 +90,58 @@ const Credentials = ({ user }) => {
       console.error('Erro ao adicionar credencial:', error);
       setMessage('Erro ao conectar ao servidor.');
     }
-  };  
-  
+  };
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setNewCredential({ ...newCredential, [name]: value });
   };
 
+  const handleEditCredential = (id) => {
+    const credentialToEdit = credentials.find(cred => cred.id === id);
+    setNewCredential({ url: credentialToEdit.url, username: credentialToEdit.username, password: credentialToEdit.password });
+    setCurrentCredentialId(id);
+    setIsEditing(true);
+    setIsAdding(true);
+  };
+
+  const handleUpdateCredential = async () => {
+    if (!userId || !currentCredentialId) {
+      setMessage('Usuário ou credencial não encontrada.');
+      return;
+    }
+
+    try {
+      const response = await fetch(`http://localhost:5000/updateCredential`, {
+        method: 'PUT',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ ...newCredential, id: currentCredentialId, user_id: userId }),
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        fetchCredentials(userId);
+        setNewCredential({ url: '', username: '', password: '' });
+        setIsEditing(false);
+        setIsAdding(false);
+        setCurrentCredentialId(null);
+        setMessage('Credencial atualizada com sucesso!');
+      } else {
+        setMessage('Erro ao atualizar credencial.');
+      }
+    } catch (error) {
+      console.error('Erro ao atualizar credencial:', error);
+      setMessage('Erro ao conectar ao servidor.');
+    }
+  };
+
   const handleDeleteCredential = async (id) => {
     if (!user?.idUsers) {
       setMessage('Usuário não encontrado.');
-      console.log('Erro: usuário sem ID');
       return;
     }
 
@@ -104,15 +150,11 @@ const Credentials = ({ user }) => {
       const response = await fetch('http://localhost:5000/deleteCredential', {
         method: 'DELETE',
         headers: {
-          'Authorization': `Bearer ${token}`, 
+          'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ id, user_id: user.idUsers }),
       });
-
-      if (!response.ok) {
-        throw new Error('Erro na resposta do servidor');
-      }
 
       const data = await response.json();
 
@@ -128,13 +170,21 @@ const Credentials = ({ user }) => {
     }
   };
 
+  const PasswordVisibility = (credentialId) => {
+    setShowPasswords((prevState) => ({
+      ...prevState,
+      [credentialId]: !prevState[credentialId]
+    }));
+  };
+
   return (
     <div className="credentials-container">
       <div className="credentials-content">
-        <h2>Gerenciar Credenciais</h2>
+        <h2>Manage credentials</h2>
         {message && <p className="message">{message}</p>}
+        
         {!isAdding ? (
-          <button onClick={() => setIsAdding(true)} className="add-credential-button">Adicionar Credencial</button>
+          <button onClick={() => setIsAdding(true)} className="add-credential-button">Add Credential</button>
         ) : (
           <div className="add-credential-form">
             <input
@@ -161,33 +211,45 @@ const Credentials = ({ user }) => {
               onChange={handleInputChange}
               className="credential-input"
             />
-            <button onClick={handleAddCredential} className="save-credential-button">Salvar</button>
+            {isEditing ? (
+              <button onClick={handleUpdateCredential} className="save-credential-button">Atualizar</button>
+            ) : (
+              <button onClick={handleAddCredential} className="save-credential-button">Salvar</button>
+            )}
             <button onClick={() => setIsAdding(false)} className="cancel-credential-button">Cancelar</button>
           </div>
         )}
 
-        <table className="credentials-table">
-          <thead>
-            <tr>
-              <th>URL</th>
-              <th>Username/Email</th>
-              <th>Senha</th>
-              <th>Ações</th>
-            </tr>
-          </thead>
-          <tbody>
-            {credentials.map((credential) => (
-              <tr key={credential.id}>
-                <td>{credential.url}</td>
-                <td>{credential.username}</td>
-                <td>{credential.password}</td>
-                <td>
-                  <button onClick={() => handleDeleteCredential(credential.id)} className="delete-credential-button">Excluir</button>
-                </td>
+        {!isAdding && (
+          <table className="credentials-table">
+            <thead>
+              <tr>
+                <th>URL</th>
+                <th>Username/Email</th>
+                <th>Senha</th>
+                <th>Ações</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+              <tbody>
+              {credentials.map((credential) => (
+                <tr key={credential.id}>
+                  <td>{credential.url}</td>
+                  <td>{credential.username}</td>
+                  <td>
+                    {showPasswords[credential.id] ? credential.password : '********'}
+                  </td>
+                  <td>
+                    <button onClick={() => PasswordVisibility(credential.id)} className="password-button">
+                      {showPasswords[credential.id] ? 'Hide' : 'Unhide'}
+                    </button>
+                    <button onClick={() => handleEditCredential(credential.id)} className="edit-credential-button">Edit</button>
+                    <button onClick={() => handleDeleteCredential(credential.id)} className="delete-credential-button">Delete</button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
       </div>
     </div>
   );

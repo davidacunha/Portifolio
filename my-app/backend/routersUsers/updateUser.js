@@ -1,7 +1,21 @@
 const express = require('express');
+const crypto = require('crypto');
 const db = require('../config/db');
-const bcrypt = require('bcrypt');
 const router = express.Router();
+
+function encryptPassword(password) {
+  const cipher = crypto.createCipher('aes-256-ctr', process.env.ENCRYPTION_KEY);
+  let encrypted = cipher.update(password, 'utf8', 'hex');
+  encrypted += cipher.final('hex');
+  return encrypted;
+}
+
+function decryptPassword(encryptedPassword) {
+  const decipher = crypto.createDecipher('aes-256-ctr', process.env.ENCRYPTION_KEY);
+  let decrypted = decipher.update(encryptedPassword, 'hex', 'utf8');
+  decrypted += decipher.final('utf8');
+  return decrypted;
+}
 
 router.post('/', async (req, res) => {
   const { email, name, currentPassword, newPassword } = req.body;
@@ -16,14 +30,14 @@ router.post('/', async (req, res) => {
     const user = users[0];
 
     if (currentPassword) {
-      const isMatch = await bcrypt.compare(currentPassword, user.password);
-      if (!isMatch) {
+      const decryptedPassword = decryptPassword(user.password);
+      if (currentPassword !== decryptedPassword) {
         return res.status(401).json({ success: false, message: 'Senha atual incorreta' });
       }
 
       if (newPassword) {
-        const hashedPassword = await bcrypt.hash(newPassword, 10);
-        await db.promise().query('UPDATE Users SET password = ? WHERE email = ?', [hashedPassword, email]);
+        const encryptedNewPassword = encryptPassword(newPassword);
+        await db.promise().query('UPDATE Users SET password = ? WHERE email = ?', [encryptedNewPassword, email]);
       }
     }
 

@@ -3,7 +3,7 @@ const db = require('../config/db');
 
 const router = express.Router();
 
-router.delete('/delete', async (req, res) => {
+router.delete('/', async (req, res) => {
   const { id, user_id } = req.body;
 
   try {
