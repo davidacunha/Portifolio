@@ -140,3 +140,31 @@
   color: inherit;
 }
 
+.password-input-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.settings-content input[type="password"],
+.settings-content input[type="text"],
+.settings-content input[type="email"] {
+  width: 100%;
+  padding-right: 40px;
+  box-sizing: border-box;
+  border-radius: 5px;
+}
+
+.toggle-password-button {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #585858d3;
+  font-size: 18px;
+  padding: 0;
+  margin: 0;
+}
+

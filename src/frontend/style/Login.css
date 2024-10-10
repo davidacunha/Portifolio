@@ -32,6 +32,12 @@
     color: #ffffff;
     font-size: 16px;
   }
+
+  .login-input::placeholder {
+    color: #ffffff98;
+    opacity: 1;
+    font-size: 16px;
+  }
   
   .login-button {
     width: 100%;

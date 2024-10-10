@@ -1,3 +1,41 @@
+/**
+ * @swagger
+ * /users/update:
+ *   post:
+ *     summary: Atualiza informações do usuário
+ *     tags:
+ *       - Usuários
+ *     description: Permite que o usuário atualize seu nome e senha, verificando a senha atual antes da atualização.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 example: "john@example.com"
+ *               name:
+ *                 type: string
+ *                 example: "John Doe"
+ *               currentPassword:
+ *                 type: string
+ *                 example: "currentPassword123"
+ *               newPassword:
+ *                 type: string
+ *                 example: "newPassword456"
+ *     responses:
+ *       200:
+ *         description: Usuário atualizado com sucesso.
+ *       401:
+ *         description: Senha atual incorreta.
+ *       404:
+ *         description: Usuário não encontrado.
+ *       500:
+ *         description: Erro no servidor.
+ */
+
 const express = require('express');
 const crypto = require('crypto');
 const db = require('../config/db');

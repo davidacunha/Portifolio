@@ -36,7 +36,7 @@ const Credentials = ({ user }) => {
 
   const fetchCredentials = async (userId, token) => {
     try {
-      const response = await fetch('http://localhost:5000/getCredential', {
+      const response = await fetch('http://localhost:5000/credentials/get', {
         method: 'GET',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -50,7 +50,7 @@ const Credentials = ({ user }) => {
         setCredentials(data.credentials);
         setMessage('');
       } else {
-        setMessage('Erro ao buscar credenciais.');
+        setMessage('Você não possui credenciais cadastradas.');
       }
     } catch (error) {
       console.error('Erro ao buscar credenciais:', error);
@@ -67,7 +67,7 @@ const Credentials = ({ user }) => {
 
     try {
       const token = sessionStorage.getItem('token');
-      const response = await fetch('http://localhost:5000/addCredential', {
+      const response = await fetch('http://localhost:5000/credentials/add', {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -79,7 +79,7 @@ const Credentials = ({ user }) => {
       const data = await response.json();
 
       if (data.success) {
-        fetchCredentials(userId);
+        fetchCredentials(userId, token);
         setNewCredential({ url: '', username: '', password: '' });
         setIsAdding(false);
         setMessage('Credencial adicionada com sucesso!');
@@ -112,7 +112,7 @@ const Credentials = ({ user }) => {
     }
 
     try {
-      const response = await fetch(`http://localhost:5000/updateCredential`, {
+      const response = await fetch(`http://localhost:5000/credentials/update`, {
         method: 'PUT',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -124,7 +124,7 @@ const Credentials = ({ user }) => {
       const data = await response.json();
 
       if (data.success) {
-        fetchCredentials(userId);
+        fetchCredentials(userId, token);
         setNewCredential({ url: '', username: '', password: '' });
         setIsEditing(false);
         setIsAdding(false);
@@ -140,26 +140,29 @@ const Credentials = ({ user }) => {
   };
 
   const handleDeleteCredential = async (id) => {
-    if (!user?.idUsers) {
+    const userId = sessionStorage.getItem('userId');
+    if (!userId) {
       setMessage('Usuário não encontrado.');
       return;
     }
-
+  
     try {
       const token = sessionStorage.getItem('token');
-      const response = await fetch('http://localhost:5000/deleteCredential', {
+      const response = await fetch('http://localhost:5000/credentials/delete', {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ id, user_id: user.idUsers }),
+        body: JSON.stringify({ id, user_id: userId }),
       });
 
+      console.log('Status da resposta:', response.status);
+  
       const data = await response.json();
-
+  
       if (data.success) {
-        fetchCredentials();
+        fetchCredentials(userId, token);
         setMessage('Credencial excluída com sucesso!');
       } else {
         setMessage('Erro ao excluir credencial.');
@@ -169,7 +172,7 @@ const Credentials = ({ user }) => {
       setMessage('Erro ao conectar ao servidor.');
     }
   };
-
+  
   const PasswordVisibility = (credentialId) => {
     setShowPasswords((prevState) => ({
       ...prevState,
@@ -184,7 +187,7 @@ const Credentials = ({ user }) => {
         {message && <p className="message">{message}</p>}
         
         {!isAdding ? (
-          <button onClick={() => setIsAdding(true)} className="add-credential-button">Add Credential</button>
+          <button onClick={() => setIsAdding(true)} className="add-credential-button">Add new credential</button>
         ) : (
           <div className="add-credential-form">
             <input
@@ -206,17 +209,17 @@ const Credentials = ({ user }) => {
             <input
               type="password"
               name="password"
-              placeholder="Senha"
+              placeholder="Password"
               value={newCredential.password}
               onChange={handleInputChange}
               className="credential-input"
             />
             {isEditing ? (
-              <button onClick={handleUpdateCredential} className="save-credential-button">Atualizar</button>
+              <button onClick={handleUpdateCredential} className="save-credential-button">Update</button>
             ) : (
-              <button onClick={handleAddCredential} className="save-credential-button">Salvar</button>
+              <button onClick={handleAddCredential} className="save-credential-button">Save</button>
             )}
-            <button onClick={() => setIsAdding(false)} className="cancel-credential-button">Cancelar</button>
+            <button onClick={() => setIsAdding(false)} className="cancel-credential-button">Cancel</button>
           </div>
         )}
 
