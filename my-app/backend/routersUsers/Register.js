@@ -1,3 +1,36 @@
+/**
+ * @swagger
+ * /users/register:
+ *   post:
+ *     summary: Registra um novo usuário
+ *     tags:
+ *       - Usuários
+ *     description: Recebe os detalhes do usuário, criptografa a senha e armazena no banco de dados.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               username:
+ *                 type: string
+ *                 example: "john_doe"
+ *               email:
+ *                 type: string
+ *                 example: "john@example.com"
+ *               password:
+ *                 type: string
+ *                 example: "password123"
+ *     responses:
+ *       201:
+ *         description: Usuário registrado com sucesso.
+ *       400:
+ *         description: E-mail já registrado ou campos obrigatórios não preenchidos.
+ *       500:
+ *         description: Erro ao registrar o usuário.
+ */
+
 const express = require('express');
 const db = require('../config/db');
 const crypto = require('crypto');
@@ -31,8 +64,15 @@ router.post('/', async (req, res) => {
   }
 
   try {
-    if (!password || password === '') {
-      return res.status(400).json({ success: false, message: 'A senha não pode estar vazia.' });
+    const [existingUser] = await db.promise().query(
+      'SELECT * FROM Users WHERE email = ?', [email]
+    );
+
+    if (existingUser.length > 0) {
+      return res.status(400).json({
+        success: false,
+        message: 'E-mail já registrado. Por favor, utilize outro e-mail ou faça login.'
+      });
     }
 
     const encryptedPassword = encryptPassword(password);

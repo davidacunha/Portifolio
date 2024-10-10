@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, Route, Routes } from 'react-router-dom';
 import Login from './frontend/componentes/Login';
-import Register from './frontend/componentes/register';
+import Register from './frontend/componentes/Register';
 import Dashboard from './frontend/componentes/Dashboard';
 import Credentials from './frontend/componentes/Credentials';
 import Settings from './frontend/componentes/Settings';

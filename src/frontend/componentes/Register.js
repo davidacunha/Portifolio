@@ -37,17 +37,17 @@ const Register = ({ onLoginClick }) => {
     e.preventDefault();
 
     if (!username || !email || !password) {
-      setError('Por favor, preencha todos os campos.');
+      setError('Please fill in all fields.');
       return;
     }
 
     if (!(hasMinLength && hasUpperCase && hasLowerCase && hasNumber && hasSpecialChar)) {
-      setError('A senha deve atender a todos os requisitos.');
+      setError('Password must meet all requirements.');
       return;
     }
 
     try {
-      const response = await fetch('http://localhost:5000/register', {
+      const response = await fetch('http://localhost:5000/users/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -58,16 +58,16 @@ const Register = ({ onLoginClick }) => {
       const data = await response.json();
 
       if (data.success) {
-        setMessage('Usuário registrado com sucesso!');
+        setMessage('User registered successfully!');
         setError('');
         setUsername('');
         setEmail('');
         setPassword('');
       } else {
-        setError(data.message || 'Erro ao registrar o usuário.');
+        setError(data.message || 'Error registering user.');
       }
     } catch (err) {
-      setError('Erro ao conectar ao servidor. Tente novamente mais tarde.');
+      setError('Error connecting to the server. Please try again later.');
     }
   };
 
@@ -103,12 +103,12 @@ const Register = ({ onLoginClick }) => {
             </button>
           </div>
           <ul className="password-requirements">
-            <li className={hasMinLength ? 'valid' : 'invalid'}>Pelo menos 8 caracteres</li>
-            <li className={hasUpperCase ? 'valid' : 'invalid'}>Um caractere maiúsculo</li>
-            <li className={hasLowerCase ? 'valid' : 'invalid'}>Um caractere minúsculo</li>
-            <li className={hasNumber ? 'valid' : 'invalid'}>Um número</li>
-            <li className={hasSpecialChar ? 'valid' : 'invalid'}>Um caractere especial (!@#$%^&*)</li>
-        </ul>
+            <li className={hasMinLength ? 'valid' : 'invalid'}>At least 8 characters</li>
+            <li className={hasUpperCase ? 'valid' : 'invalid'}>One uppercase letter</li>
+            <li className={hasLowerCase ? 'valid' : 'invalid'}>One lowercase letter</li>
+            <li className={hasNumber ? 'valid' : 'invalid'}>One number</li>
+            <li className={hasSpecialChar ? 'valid' : 'invalid'}>One special character (!@#$%^&*)</li>
+          </ul>
           <button type="submit" className="register-button">Register</button>
         </form>
         {error && <p className="register-error">{error}</p>}

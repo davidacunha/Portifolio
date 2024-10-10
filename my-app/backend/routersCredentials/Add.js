@@ -1,3 +1,37 @@
+/**
+ * @swagger
+ * /credentials/add:
+ *   post:
+ *     summary: Adiciona uma nova credencial para o usuário
+ *     tags: 
+ *       - Credenciais
+ *     description: Recebe detalhes de uma credencial, criptografa a senha e salva no banco de dados.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               user_id:
+ *                 type: integer
+ *                 example: 1
+ *               url:
+ *                 type: string
+ *                 example: "https://example.com"
+ *               username:
+ *                 type: string
+ *                 example: "user123"
+ *               password:
+ *                 type: string
+ *                 example: "password123"
+ *     responses:
+ *       200:
+ *         description: Credencial salva com sucesso.
+ *       500:
+ *         description: Erro ao salvar a credencial.
+ */
+
 const express = require('express');
 const crypto = require('crypto');
 const db = require('../config/db');

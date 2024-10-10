@@ -31,50 +31,52 @@ function decryptPassword(encryptedPassword) {
   return decrypted;
 }
 
-
 router.post('/auth', async (req, res) => {
   const { email, password } = req.body;
 
   if (!email || !password) {
-    return res.status(400).json({ success: false, message: 'Por favor, preencha todos os campos.' });
+    return res.status(400).json({ success: false, message: 'Please fill in all fields.' });
   }
 
   try {
     const [users] = await db.promise().query('SELECT * FROM Users WHERE email = ?', [email]);
 
     if (users.length === 0) {
-      return res.status(401).json({ success: false, message: 'E-mail ou senha incorretos.' });
+      return res.status(401).json({ success: false, message: 'Incorrect email or password.' });
     }
 
     const user = users[0];
-    
+
     if (!user.password) {
-      console.error("Nenhuma senha encontrada no banco de dados para o usuário:", email);
-      return res.status(500).json({ success: false, message: 'Erro no servidor.' });
+      console.error("No password found in the database for user:", email);
+      return res.status(500).json({ success: false, message: 'Server error.' });
     }
 
     const decryptedPassword = decryptPassword(user.password);
 
     if (decryptedPassword === password) {
       const token = jwt.sign({ id: user.idUsers }, process.env.JWT_SECRET, { expiresIn: '1h' });
+
+      res.setHeader('Authorization', `Bearer ${token}`);
+      
       res.status(200).json({
-        message: 'Login bem-sucedido!',
+        message: 'Login successful!',
         success: true,
         user: { 
           id: user.idUsers, 
           name: user.username, 
-          email: user.email, 
-          token: token, 
-          userKey: userKey
+          email: user.email,
+          token: token 
         },
       });
     } else {
-      res.status(401).json({ success: false, message: 'E-mail ou senha incorretos.' });
+      res.status(401).json({ success: false, message: 'Incorrect email or password.' });
     }
   } catch (err) {
-    console.error('Erro na consulta ao banco de dados:', err);
-    res.status(500).json({ success: false, message: 'Erro no servidor' });
+    console.error('Database query error:', err);
+    res.status(500).json({ success: false, message: 'Server error' });
   }
 });
+
 
 module.exports = router;

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import '../style/Settings.css';
 
 const Settings = ({ userEmail, username }) => {
@@ -16,6 +17,10 @@ const Settings = ({ userEmail, username }) => {
     hasNumber: false,
     hasSpecialChar: false,
   });
+
+  const [showCurrentPassword, setShowCurrentPassword] = useState(false);
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   useEffect(() => {
     setEditName(username);
@@ -38,12 +43,12 @@ const Settings = ({ userEmail, username }) => {
 
   const handleSaveClick = async () => {
     if (newPassword && newPassword !== confirmPassword) {
-      setMessage('As senhas não coincidem.');
+      setMessage("Passwords don't match.");
       return;
     }
 
     try {
-      const response = await fetch('http://localhost:5000/updateUser', {
+      const response = await fetch('http://localhost:5000/users/Update', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -60,13 +65,13 @@ const Settings = ({ userEmail, username }) => {
 
       if (data.success) {
         setIsEditing(false);
-        setMessage('Usuário atualizado com sucesso!');
+        setMessage('User updated successfully!');
       } else {
-        setMessage(data.message || 'Erro ao atualizar os dados do usuário');
+        setMessage(data.message || 'Error updating user information.');
       }
     } catch (error) {
-      console.error('Erro ao atualizar os dados do usuário:', error);
-      setMessage('Erro ao atualizar os dados do usuário');
+      console.error('Error updating user information:', error);
+      setMessage('Error updating user information.');
     }
   };
 
@@ -103,38 +108,53 @@ const Settings = ({ userEmail, username }) => {
           {isEditing && (
             <>
               <label>
-                Current Password:<input
-                  type="password"
-                  value={currentPassword}
-                  onChange={(e) => setCurrentPassword(e.target.value)}
-                  placeholder="Digite sua senha atual"
-                />
+                Current Password:<div className="password-input-wrapper">
+                  <input
+                    type={showCurrentPassword ? 'text' : 'password'}
+                    value={currentPassword}
+                    onChange={(e) => setCurrentPassword(e.target.value)}
+                    placeholder="Enter your current password"
+                  />
+                  <button type="button" className="toggle-password-button" onClick={() => setShowCurrentPassword(!showCurrentPassword)}>
+                    {showCurrentPassword ? <FaEyeSlash /> : <FaEye />}
+                  </button>
+                </div>
               </label>
               <label>
-                New Password:<input
-                  type="password"
-                  value={newPassword}
-                  onChange={(e) => {
-                    setNewPassword(e.target.value);
-                    validatePassword(e.target.value);
-                  }}
-                  placeholder="Digite a nova senha"
-                />
+                New Password:<div className="password-input-wrapper">
+                  <input
+                    type={showNewPassword ? 'text' : 'password'}
+                    value={newPassword}
+                    onChange={(e) => {
+                      setNewPassword(e.target.value);
+                      validatePassword(e.target.value);
+                    }}
+                    placeholder="Enter new password"
+                  />
+                  <button type="button" className="toggle-password-button" onClick={() => setShowNewPassword(!showNewPassword)}>
+                    {showNewPassword ? <FaEyeSlash /> : <FaEye />}
+                  </button>
+                </div>
               </label>
               <ul className="change-password">
-                <li className={passwordValidations.hasMinLength ? 'valid' : 'invalid'}>Pelo menos 8 caracteres</li>
-                <li className={passwordValidations.hasUpperCase ? 'valid' : 'invalid'}>Um caractere maiúsculo</li>
-                <li className={passwordValidations.hasLowerCase ? 'valid' : 'invalid'}>Um caractere minúsculo</li>
-                <li className={passwordValidations.hasNumber ? 'valid' : 'invalid'}>Um número</li>
-                <li className={passwordValidations.hasSpecialChar ? 'valid' : 'invalid'}>Um caractere especial (!@#$%^&*)</li>
+                <li className={passwordValidations.hasMinLength ? 'valid' : 'invalid'}>At least 8 characters</li>
+                <li className={passwordValidations.hasUpperCase ? 'valid' : 'invalid'}>One uppercase letter</li>
+                <li className={passwordValidations.hasLowerCase ? 'valid' : 'invalid'}>One lowercase letter</li>
+                <li className={passwordValidations.hasNumber ? 'valid' : 'invalid'}>One number</li>
+                <li className={passwordValidations.hasSpecialChar ? 'valid' : 'invalid'}>One special character (!@#$%^&*)</li>
               </ul>
               <label>
-                Confirm your new password:<input
-                  type="password"
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                  placeholder="Confirme a nova senha"
-                />
+                Confirm your new password:<div className="password-input-wrapper">
+                  <input
+                    type={showConfirmPassword ? 'text' : 'password'}
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    placeholder="Confirm new password"
+                  />
+                  <button type="button" className="toggle-password-button" onClick={() => setShowConfirmPassword(!showConfirmPassword)}>
+                    {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
+                  </button>
+                </div>
               </label>
             </>
           )}
