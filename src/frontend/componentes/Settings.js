@@ -48,7 +48,7 @@ const Settings = ({ userEmail, username }) => {
     }
 
     try {
-      const response = await fetch('http://localhost:5000/users/Update', {
+      const response = await fetch('https://portifolio-orcin-nine-70.vercel.app/users/Update', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
