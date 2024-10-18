@@ -18,7 +18,7 @@ const Login = ({ onLoginSuccess, onRegisterClick }) => {
     }
 
     try {
-      const response = await fetch('http://localhost:5000/auth', {
+      const response = await fetch('https://portifolio-orcin-nine-70.vercel.app/auth', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
