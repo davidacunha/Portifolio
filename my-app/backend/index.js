@@ -13,18 +13,22 @@ const userRoutes = require('./routersUsers');
 const credentialRoutes = require('./routersCredentials');
 
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT;
 
-app.use(cors());
+app.use(cors({
+  origin: 'https://portifolio-orcin-nine-70.vercel.app/',
+  credentials: true
+}));
+
 app.use(express.json());
-app.use(authRoutes);
+
+app.use('/auth', authRoutes);
 app.use('/users', userRoutes);
 app.use('/credentials', credentialRoutes);
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 app.listen(PORT, () => {
   console.log(`Servidor rodando na porta ${PORT}`);
   console.log(`Swagger docs available at http://localhost:${PORT}/api-docs`);
 });
-
