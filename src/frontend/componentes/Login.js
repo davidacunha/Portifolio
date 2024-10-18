@@ -18,7 +18,7 @@ const Login = ({ onLoginSuccess, onRegisterClick }) => {
     }
 
     try {
-      const response = await fetch('https://portifolio-orcin-nine-70.vercel.app/auth', {
+      const response = await fetch('https://ec2-18-231-166-196.sa-east-1.compute.amazonaws.com/auth', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
