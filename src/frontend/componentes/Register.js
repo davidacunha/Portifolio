@@ -47,7 +47,7 @@ const Register = ({ onLoginClick }) => {
     }
 
     try {
-      const response = await fetch('https://portifolio-orcin-nine-70.vercel.app/users/register', {
+      const response = await fetch('http://18.228.189.173:8080/users/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

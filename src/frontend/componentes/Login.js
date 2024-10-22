@@ -18,7 +18,7 @@ const Login = ({ onLoginSuccess, onRegisterClick }) => {
     }
 
     try {
-      const response = await fetch('http://ec2-18-231-166-196.sa-east-1.compute.amazonaws.com/auth', {
+      const response = await fetch('http://18.228.189.173:8080/middlewares/auth', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

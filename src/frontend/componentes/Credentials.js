@@ -36,7 +36,7 @@ const Credentials = ({ user }) => {
 
   const fetchCredentials = async (userId, token) => {
     try {
-      const response = await fetch('https://portifolio-orcin-nine-70.vercel.app/credentials/get', {
+      const response = await fetch('http://18.228.189.173:8080/credentials/get', {
         method: 'GET',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -67,7 +67,7 @@ const Credentials = ({ user }) => {
 
     try {
       const token = sessionStorage.getItem('token');
-      const response = await fetch('https://portifolio-orcin-nine-70.vercel.app/credentials/add', {
+      const response = await fetch('http://18.228.189.173:8080/credentials/add', {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -112,7 +112,7 @@ const Credentials = ({ user }) => {
     }
 
     try {
-      const response = await fetch(`https://portifolio-orcin-nine-70.vercel.app/credentials/update`, {
+      const response = await fetch(`http://18.228.189.173:8080/credentials/update`, {
         method: 'PUT',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -148,7 +148,7 @@ const Credentials = ({ user }) => {
   
     try {
       const token = sessionStorage.getItem('token');
-      const response = await fetch('https://portifolio-orcin-nine-70.vercel.app/credentials/delete', {
+      const response = await fetch('http://18.228.189.173:8080/credentials/delete', {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`,

@@ -31,7 +31,7 @@ function decryptPassword(encryptedPassword) {
   return decrypted;
 }
 
-router.post('/auth', async (req, res) => {
+router.post('/', async (req, res) => {
   const { email, password } = req.body;
 
   if (!email || !password) {

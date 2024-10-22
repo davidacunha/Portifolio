@@ -16,7 +16,7 @@ const app = express();
 const PORT = process.env.PORT;
 
 app.use(cors({
-  origin: 'https://portifolio-orcin-nine-70.vercel.app/',
+  origin: 'http://18.228.189.173:8080/',
   credentials: true
 }));
 
@@ -29,6 +29,5 @@ app.use('/credentials', credentialRoutes);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 app.listen(PORT, () => {
-  console.log(`Servidor rodando na porta ${PORT}`);
   console.log(`Swagger docs available at http://localhost:${PORT}/api-docs`);
 });
