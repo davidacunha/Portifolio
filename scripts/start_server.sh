@@ -2,6 +2,6 @@
 echo "Iniciando servidor da aplicação"
 
 # Navegar até o diretório da aplicação e iniciar o servidor
-cd /var/www/html
+cd home/ec2-user/Portifolio/my-app/backend
 npm install
-npm start
+node index.js 
