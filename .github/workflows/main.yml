@@ -8,20 +8,23 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
 
-    - name: Run deployment script over SSH
-      uses: appleboy/ssh-action@v0.1.5
-      with:
-        host: ${{ secrets.EC2_HOST }}
-        username: ${{ secrets.EC2_USER }}
-        key: ${{ secrets.EC2_SSH_KEY }}
-        port: 22
-        debug: true
-        script: |
-          cd /Portifolio
-          git pull origin main
-          pm2 restart all
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Add SSH key
+        uses: webfactory/ssh-agent@v0.5.3
+        with:
+          ssh-private-key: ${{ secrets.EC2_SSH_KEY }}
+
+      - name: Deploy to EC2
+        run: |
+          ssh -o StrictHostKeyChecking=no ec2-user@18.228.189.173 << 'EOF'
+            cd /Portifolio
+            git pull origin main
+            # Comandos para iniciar o backend
+            cd my-app/backend
+            node index.js
+            pm2 restart index.js
+          EOF
