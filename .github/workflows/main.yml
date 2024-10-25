@@ -25,6 +25,7 @@ jobs:
             cd Portifolio
             git pull origin main
             # Comandos para iniciar o backend
+            ls
             cd Portifolio/my-app/backend
             node index.js
             pm2 restart index.js
