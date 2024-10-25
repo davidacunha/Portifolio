@@ -11,6 +11,7 @@
     "backend": "node index.js",
     "testBackend": "echo \"Error: no test specified\" && exit 1"
   },
+  "proxy":"http://18.228.189.173:8080",
   "keywords": [],
   "author": "",
   "license": "ISC",
