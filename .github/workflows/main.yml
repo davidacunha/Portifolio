@@ -22,10 +22,10 @@ jobs:
         run: |
           ssh -o StrictHostKeyChecking=no ec2-user@18.228.189.173 << 'EOF'
             ls
-            cd home/ec2-user/Portifolio
+            cd Portifolio
             git pull origin main
             # Comandos para iniciar o backend
-            cd home/ec2-user/Portifolio/my-app/backend
+            cd Portifolio/my-app/backend
             node index.js
             pm2 restart index.js
           EOF
