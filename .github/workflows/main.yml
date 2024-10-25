@@ -24,6 +24,6 @@ jobs:
             cd Portifolio
             git pull origin main
             cd my-app/backend
-            nohup node index.js > output.log 2>&1 &
+            npm install
             pm2 restart index.js
           EOF
