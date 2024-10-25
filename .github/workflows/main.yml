@@ -21,10 +21,11 @@ jobs:
       - name: Deploy to EC2
         run: |
           ssh -o StrictHostKeyChecking=no ec2-user@18.228.189.173 << 'EOF'
-            cd /Portifolio
+            ls
+            cd home/ec2-user/Portifolio
             git pull origin main
             # Comandos para iniciar o backend
-            cd my-app/backend
+            cd home/ec2-user/Portifolio/my-app/backend
             node index.js
             pm2 restart index.js
           EOF
