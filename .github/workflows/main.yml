@@ -21,12 +21,9 @@ jobs:
       - name: Deploy to EC2
         run: |
           ssh -o StrictHostKeyChecking=no ec2-user@18.228.189.173 << 'EOF'
-            ls
             cd Portifolio
             git pull origin main
-            # Comandos para iniciar o backend
-            ls
             cd my-app/backend
-            node index.js
+            nohup node index.js > output.log 2>&1 &
             pm2 restart index.js
           EOF
