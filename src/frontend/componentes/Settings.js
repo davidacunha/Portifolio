@@ -48,7 +48,7 @@ const Settings = ({ userEmail, username }) => {
     }
 
     try {
-      const response = await fetch('http://18.228.189.173:8080/users/Update', {
+      const response = await fetch('http://54.207.96.51/users/Update', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

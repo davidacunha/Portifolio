@@ -16,7 +16,7 @@ const app = express();
 const PORT = process.env.PORT;
 
 app.use(cors({
-  origin: 'http://18.228.189.173:8080/',
+  origin: 'http://54.207.96.51/',
   credentials: true
 }));
 
