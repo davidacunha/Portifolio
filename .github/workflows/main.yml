@@ -20,7 +20,7 @@ jobs:
 
       - name: Deploy to EC2
         run: |
-          ssh -o StrictHostKeyChecking=no ec2-user@18.228.189.173 << 'EOF'
+          ssh -o StrictHostKeyChecking=no ec2-user@54.207.96.51 << 'EOF'
             cd Portifolio
             git pull origin main
             cd my-app/backend
