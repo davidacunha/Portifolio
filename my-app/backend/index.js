@@ -16,7 +16,7 @@ const app = express();
 const PORT = process.env.PORT;
 
 app.use(cors({
-  origin: 'https://54.207.96.51/',
+  origin: 'https://portifolio-orcin-nine-70.vercel.app/',
   methods: 'GET,POST,DELETE,UPDATE',
   credentials: true
 }));
