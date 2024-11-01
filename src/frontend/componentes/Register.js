@@ -47,7 +47,7 @@ const Register = ({ onLoginClick }) => {
     }
 
     try {
-      const response = await fetch('http://54.207.96.51/users/register', {
+      const response = await fetch('https://54.207.96.51/users/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -36,7 +36,7 @@ const Credentials = ({ user }) => {
 
   const fetchCredentials = async (userId, token) => {
     try {
-      const response = await fetch('http://54.207.96.51/credentials/get', {
+      const response = await fetch('https://54.207.96.51/credentials/get', {
         method: 'GET',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -67,7 +67,7 @@ const Credentials = ({ user }) => {
 
     try {
       const token = sessionStorage.getItem('token');
-      const response = await fetch('http://54.207.96.51/credentials/add', {
+      const response = await fetch('https://54.207.96.51/credentials/add', {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -112,7 +112,7 @@ const Credentials = ({ user }) => {
     }
 
     try {
-      const response = await fetch(`http://54.207.96.51/credentials/update`, {
+      const response = await fetch(`https://54.207.96.51/credentials/update`, {
         method: 'PUT',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -148,7 +148,7 @@ const Credentials = ({ user }) => {
   
     try {
       const token = sessionStorage.getItem('token');
-      const response = await fetch('http://54.207.96.51/credentials/delete', {
+      const response = await fetch('https://54.207.96.51/credentials/delete', {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`,

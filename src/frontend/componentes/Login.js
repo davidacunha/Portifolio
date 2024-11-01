@@ -18,7 +18,7 @@ const Login = ({ onLoginSuccess, onRegisterClick }) => {
     }
 
     try {
-      const response = await fetch('http://54.207.96.51/middlewares/auth', {
+      const response = await fetch('https://54.207.96.51/auth', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
