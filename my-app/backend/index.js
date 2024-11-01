@@ -17,8 +17,11 @@ const PORT = process.env.PORT;
 
 app.use(cors({
   origin: 'https://54.207.96.51/',
+  methods: 'GET,POST,DELETE,UPDATE',
   credentials: true
 }));
+
+app.options('*', cors());
 
 app.use(express.json());
 
